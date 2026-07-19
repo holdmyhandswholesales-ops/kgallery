@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kimberly — A Photo Journal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,400;1,9..144,500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#efe9de;
+    --ink-dim:#a89f8f;
+    --ground:#161412;
+    --ground-2:#1e1b17;
+    --line:#332e28;
+    --accent:#c4602e;
+    --accent-soft:rgba(196,96,46,0.15);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:'Inter', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    max-width:600px;
+    margin:0 auto;
+    padding:88px 24px 48px;
+    text-align:center;
+  }
+
+  .hero .rule{
+    width:36px;
+    height:2px;
+    background:var(--accent);
+    margin:0 auto 26px;
+  }
+
+  .hero h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(52px, 13vw, 96px);
+    line-height:0.94;
+    margin:0;
+    letter-spacing:-0.02em;
+    text-transform:uppercase;
+  }
+
+  .hero .tagline{
+    font-family:'Inter', sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.32em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:22px 0 26px;
+  }
+
+  .hero p{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:18px;
+    line-height:1.65;
+    color:var(--ink-dim);
+    max-width:400px;
+    margin:0 auto;
+  }
+
+  .hero .frame-line{
+    margin-top:48px;
+    height:1px;
+    background:linear-gradient(90deg, transparent, var(--line) 20%, var(--line) 80%, transparent);
+  }
+
+  /* ---------- FEED ---------- */
+  .feed{
+    max-width:520px;
+    margin:0 auto;
+    padding:8px 0 100px;
+  }
+
+  .plate{
+    padding:40px 24px 0;
+  }
+
+  .frame{
+    position:relative;
+    width:100%;
+    border-radius:2px;
+    overflow:hidden;
+    background:var(--ground-2);
+    border:1px solid var(--line);
+  }
+
+  .frame img{
+    width:100%;
+    height:auto;
+    display:block;
+    aspect-ratio:4/5;
+    object-fit:cover;
+  }
+
+  .caption{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:15px;
+    line-height:1.5;
+    color:var(--ink-dim);
+    margin:16px 2px 18px;
+    max-width:420px;
+  }
+
+  /* ---------- ACTION BAR ---------- */
+  .actions{
+    display:flex;
+    align-items:center;
+    gap:22px;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--line);
+    margin-bottom:2px;
+  }
+
+  .action-btn{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    color:var(--ink-dim);
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    font-weight:500;
+    padding:8px 0;
+    -webkit-tap-highlight-color:transparent;
+    transition:color 0.15s ease;
+  }
+
+  .action-btn:hover{ color:var(--ink); }
+
+  .action-btn svg{
+    width:20px;
+    height:20px;
+    stroke:currentColor;
+    fill:none;
+    stroke-width:1.6;
+    transition:transform 0.18s cubic-bezier(.34,1.56,.64,1), fill 0.15s ease, stroke 0.15s ease;
+  }
+
+  .action-btn.active svg{
+    transform:scale(1.12);
+  }
+
+  .action-btn.love.active{ color:var(--accent); }
+  .action-btn.love.active svg{ fill:var(--accent); stroke:var(--accent); }
+
+  .action-btn.like.active{ color:#d8b04a; }
+  .action-btn.like.active svg{ fill:#d8b04a; stroke:#d8b04a; }
+
+  .action-btn.share.active{ color:var(--ink); }
+
+  .action-btn .count{
+    font-variant-numeric:tabular-nums;
+    min-width:14px;
+  }
+
+  /* pop animation on click */
+  @keyframes pop{
+    0%{transform:scale(1);}
+    40%{transform:scale(1.35);}
+    100%{transform:scale(1.12);}
+  }
+  .action-btn.pulse svg{
+    animation:pop 0.32s cubic-bezier(.34,1.56,.64,1);
+  }
+
+  /* ---------- FOOTER ---------- */
+  .footer{
+    max-width:520px;
+    margin:0 auto;
+    padding:40px 24px 60px;
+    text-align:center;
+    color:var(--ink-dim);
+    font-size:12px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+
+  .footer .fmark{
+    color:var(--accent);
+  }
+
+  /* toast for share */
+  .toast{
+    position:fixed;
+    bottom:28px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:var(--ink);
+    color:var(--ground);
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    font-weight:500;
+    padding:11px 20px;
+    border-radius:999px;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.25s ease, transform 0.25s ease;
+    z-index:100;
+    white-space:nowrap;
+  }
+  .toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation:none !important; transition:none !important; }
+  }
+</style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="rule"></div>
+    <h1>Kimberly Gallery</h1>
+    <div class="tagline">Photo Journal</div>
+    <!-- <p>Small studies in light and stillness — six frames at a time, shot on film, kept mostly quiet.</p> -->
+    <div class="frame-line"></div>
+  </section>
+
+  <main class="feed" id="feed"></main>
+
+  <div class="footer">Plate — Est. 2026 · <span class="fmark">6</span> images shown</div>
+
+  <div class="toast" id="toast">Link copied</div>
+
+<script>
+  const plates = [
+    {
+      img: "images/1.jpeg",
+      // caption: "Riverbank, early fog — the water hadn't decided which way to move yet.",
+      loves: 128, likes: 342, shares: 12
+    },
+    {
+      img: "images/2.jpeg",
+      // caption: "A doorway in the old quarter, painted over four times and still peeling.",
+      loves: 96, likes: 210, shares: 5
+    },
+    {
+      img: "images/3.jpeg",
+      // caption: "Mountain light at 6am — the only hour it looks like this.",
+      loves: 204, likes: 501, shares: 27
+    },
+    {
+      img: "images/4.jpeg",
+      // caption: "Left this print underexposed on purpose. It felt closer to memory that way.",
+      loves: 77, likes: 168, shares: 3
+    },
+    {
+      img: "images/5.jpeg",
+      // caption: "The market closes at four. By then the fruit stalls look like paintings.",
+      loves: 152, likes: 389, shares: 19
+    },
+    {
+      img: "images/6.jpeg",
+      // caption: "Nobody else waited for the tide to come back in. Worth it.",
+      loves: 183, likes: 447, shares: 22
+    }
+  ];
+
+  const feed = document.getElementById('feed');
+  const toast = document.getElementById('toast');
+
+  function formatCount(n){
+    if(n >= 1000) return (n/1000).toFixed(n % 1000 >= 100 ? 1 : 0) + 'k';
+    return n;
+  }
+
+  function showToast(msg){
+    toast.textContent = msg;
+    toast.classList.add('show');
+    clearTimeout(showToast._t);
+    showToast._t = setTimeout(()=> toast.classList.remove('show'), 1600);
+  }
+
+  plates.forEach((p, i) => {
+    const num = String(i + 1).padStart(2, '0');
+    const total = String(plates.length).padStart(2, '0');
+
+    const el = document.createElement('article');
+    el.className = 'plate';
+    el.innerHTML = `
+      <div class="frame">
+        <img src="${p.img}" alt="${p.caption}" loading="lazy">
+      </div>
+      <p class="caption">${p.caption}</p>
+      <div class="actions">
+        <button class="action-btn love" data-type="love" aria-pressed="false">
+          <svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.7-10-9.1C.4 8.6 2 5 5.6 5c2 0 3.4 1.1 4.4 2.6C11 6.1 12.4 5 14.4 5 18 5 19.6 8.6 22 11.9 19.5 16.3 12 21 12 21z"/></svg>
+          <span class="count">${formatCount(p.loves)}</span>
+        </button>
+        <button class="action-btn like" data-type="like" aria-pressed="false">
+          <svg viewBox="0 0 24 24"><path d="M7 22V11m0 11H4a1 1 0 0 1-1-1v-9a1 1 0 0 1 1-1h3m3 11h8.28a2 2 0 0 0 2-1.7l1.38-9A2 2 0 0 0 19.66 9H14V4a2 2 0 0 0-2-2l-2 7v13z"/></svg>
+          <span class="count">${formatCount(p.likes)}</span>
+        </button>
+        <button class="action-btn share" data-type="share" aria-pressed="false">
+          <svg viewBox="0 0 24 24"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7M16 6l-4-4-4 4M12 2v14"/></svg>
+          <span class="count">${formatCount(p.shares)}</span>
+        </button>
+      </div>
+    `;
+    feed.appendChild(el);
+
+    const data = { loves: p.loves, likes: p.likes, shares: p.shares };
+
+    el.querySelectorAll('.action-btn').forEach(btn => {
+      const type = btn.dataset.type;
+      btn.addEventListener('click', () => {
+        const countEl = btn.querySelector('.count');
+
+        if(type === 'share'){
+          data.shares += 1;
+          countEl.textContent = formatCount(data.shares);
+          btn.classList.add('pulse');
+          setTimeout(()=> btn.classList.remove('pulse'), 320);
+          const url = window.location.href;
+          if(navigator.share){
+            navigator.share({ title: 'Plate ' + num, url }).catch(()=>{});
+          } else if(navigator.clipboard){
+            navigator.clipboard.writeText(url).then(()=> showToast('Link copied'));
+          } else {
+            showToast('Shared');
+          }
+          return;
+        }
+
+        const key = type === 'love' ? 'loves' : 'likes';
+        const isActive = btn.classList.toggle('active');
+        btn.setAttribute('aria-pressed', isActive);
+        data[key] += isActive ? 1 : -1;
+        countEl.textContent = formatCount(data[key]);
+        btn.classList.add('pulse');
+        setTimeout(()=> btn.classList.remove('pulse'), 320);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
